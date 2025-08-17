@@ -1,17 +1,15 @@
 package com.oronaminc.join.websocket.session;
 
-import java.security.Principal;
-import java.util.Objects;
-
+import com.oronaminc.join.room.event.RoomExitEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
 
-import com.oronaminc.join.room.event.RoomExitEvent;
-
-import lombok.extern.slf4j.Slf4j;
+import java.security.Principal;
+import java.util.Objects;
 
 @Slf4j
 public class CustomWebSocketHandlerDecorator extends WebSocketHandlerDecorator {
@@ -41,7 +39,7 @@ public class CustomWebSocketHandlerDecorator extends WebSocketHandlerDecorator {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus)
             throws Exception {
         // 세션 연결 종료되면 map에서 제거
-        // exitRoomPublishEvent(session);
+        exitRoomPublishEvent(session);
         sessionManager.removeSession(session.getId());
         super.afterConnectionClosed(session, closeStatus);
     }
